@@ -4,7 +4,7 @@
 #
 Name     : pypi-cffsubr
 Version  : 0.2.9.post1
-Release  : 2
+Release  : 3
 URL      : https://files.pythonhosted.org/packages/b6/a6/81c4ccd71c172a7f863c799433426332b01d3f4d302859313524ebf9230b/cffsubr-0.2.9.post1.tar.gz
 Source0  : https://files.pythonhosted.org/packages/b6/a6/81c4ccd71c172a7f863c799433426332b01d3f4d302859313524ebf9230b/cffsubr-0.2.9.post1.tar.gz
 Summary  : Standalone CFF subroutinizer based on the AFDKO tx tool
@@ -15,18 +15,18 @@ Requires: pypi-cffsubr-license = %{version}-%{release}
 Requires: pypi-cffsubr-python = %{version}-%{release}
 Requires: pypi-cffsubr-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
-BuildRequires : pypi(pluggy)
-BuildRequires : py-python
 BuildRequires : pypi(booleanoperations)
 BuildRequires : pypi(fonttools)
 BuildRequires : pypi(lxml)
+BuildRequires : pypi(py)
 BuildRequires : pypi(setuptools)
 BuildRequires : pypi(setuptools_git_ls_files)
 BuildRequires : pypi(setuptools_scm)
 BuildRequires : pypi(wheel)
-BuildRequires : pytest
-BuildRequires : tox
-BuildRequires : pypi(virtualenv)
+BuildRequires : pypi-pluggy
+BuildRequires : pypi-pytest
+BuildRequires : pypi-tox
+BuildRequires : pypi-virtualenv
 
 %description
 # cffsubr
@@ -62,9 +62,7 @@ Summary: python3 components for the pypi-cffsubr package.
 Group: Default
 Requires: python3-core
 Provides: pypi(cffsubr)
-Requires: pypi(booleanoperations)
 Requires: pypi(fonttools)
-Requires: pypi(lxml)
 
 %description python3
 python3 components for the pypi-cffsubr package.
@@ -79,7 +77,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1640196006
+export SOURCE_DATE_EPOCH=1649693072
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
