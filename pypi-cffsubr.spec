@@ -4,13 +4,15 @@
 #
 Name     : pypi-cffsubr
 Version  : 0.2.9.post1
-Release  : 4
+Release  : 5
 URL      : https://files.pythonhosted.org/packages/b6/a6/81c4ccd71c172a7f863c799433426332b01d3f4d302859313524ebf9230b/cffsubr-0.2.9.post1.tar.gz
 Source0  : https://files.pythonhosted.org/packages/b6/a6/81c4ccd71c172a7f863c799433426332b01d3f4d302859313524ebf9230b/cffsubr-0.2.9.post1.tar.gz
 Summary  : Standalone CFF subroutinizer based on the AFDKO tx tool
 Group    : Development/Tools
 License  : Apache-2.0 OFL-1.0 OFL-1.1
 Requires: pypi-cffsubr-bin = %{version}-%{release}
+Requires: pypi-cffsubr-filemap = %{version}-%{release}
+Requires: pypi-cffsubr-lib = %{version}-%{release}
 Requires: pypi-cffsubr-license = %{version}-%{release}
 Requires: pypi-cffsubr-python = %{version}-%{release}
 Requires: pypi-cffsubr-python3 = %{version}-%{release}
@@ -35,9 +37,28 @@ BuildRequires : pypi-virtualenv
 Summary: bin components for the pypi-cffsubr package.
 Group: Binaries
 Requires: pypi-cffsubr-license = %{version}-%{release}
+Requires: pypi-cffsubr-filemap = %{version}-%{release}
 
 %description bin
 bin components for the pypi-cffsubr package.
+
+
+%package filemap
+Summary: filemap components for the pypi-cffsubr package.
+Group: Default
+
+%description filemap
+filemap components for the pypi-cffsubr package.
+
+
+%package lib
+Summary: lib components for the pypi-cffsubr package.
+Group: Libraries
+Requires: pypi-cffsubr-license = %{version}-%{release}
+Requires: pypi-cffsubr-filemap = %{version}-%{release}
+
+%description lib
+lib components for the pypi-cffsubr package.
 
 
 %package license
@@ -60,6 +81,7 @@ python components for the pypi-cffsubr package.
 %package python3
 Summary: python3 components for the pypi-cffsubr package.
 Group: Default
+Requires: pypi-cffsubr-filemap = %{version}-%{release}
 Requires: python3-core
 Provides: pypi(cffsubr)
 Requires: pypi(fonttools)
@@ -71,13 +93,16 @@ python3 components for the pypi-cffsubr package.
 %prep
 %setup -q -n cffsubr-0.2.9.post1
 cd %{_builddir}/cffsubr-0.2.9.post1
+pushd ..
+cp -a cffsubr-0.2.9.post1 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1649725938
+export SOURCE_DATE_EPOCH=1653008504
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -88,6 +113,15 @@ export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 export MAKEFLAGS=%{?_smp_mflags}
 python3 -m build --wheel --skip-dependency-check --no-isolation
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
+python3 -m build --wheel --skip-dependency-check --no-isolation
+
+popd
 
 %install
 export MAKEFLAGS=%{?_smp_mflags}
@@ -103,6 +137,15 @@ pip install --root=%{buildroot} --no-deps --ignore-installed dist/*.whl
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
+pip install --root=%{buildroot}-v3 --no-deps --ignore-installed dist/*.whl
+popd
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -110,6 +153,14 @@ echo ----[ mark ]----
 %files bin
 %defattr(-,root,root,-)
 /usr/bin/cffsubr
+
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-pypi-cffsubr
+
+%files lib
+%defattr(-,root,root,-)
+/usr/share/clear/optimized-elf/other*
 
 %files license
 %defattr(0644,root,root,0755)
