@@ -4,7 +4,7 @@
 #
 Name     : pypi-cffsubr
 Version  : 0.2.9.post1
-Release  : 10
+Release  : 11
 URL      : https://files.pythonhosted.org/packages/b6/a6/81c4ccd71c172a7f863c799433426332b01d3f4d302859313524ebf9230b/cffsubr-0.2.9.post1.tar.gz
 Source0  : https://files.pythonhosted.org/packages/b6/a6/81c4ccd71c172a7f863c799433426332b01d3f4d302859313524ebf9230b/cffsubr-0.2.9.post1.tar.gz
 Summary  : Standalone CFF subroutinizer based on the AFDKO tx tool
