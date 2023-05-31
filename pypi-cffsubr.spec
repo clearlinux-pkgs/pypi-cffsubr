@@ -5,7 +5,7 @@
 #
 Name     : pypi-cffsubr
 Version  : 0.2.9.post1
-Release  : 15
+Release  : 16
 URL      : https://files.pythonhosted.org/packages/b6/a6/81c4ccd71c172a7f863c799433426332b01d3f4d302859313524ebf9230b/cffsubr-0.2.9.post1.tar.gz
 Source0  : https://files.pythonhosted.org/packages/b6/a6/81c4ccd71c172a7f863c799433426332b01d3f4d302859313524ebf9230b/cffsubr-0.2.9.post1.tar.gz
 Summary  : Standalone CFF subroutinizer based on the AFDKO tx tool
@@ -20,6 +20,10 @@ BuildRequires : pypi(booleanoperations)
 BuildRequires : pypi(fonttools)
 BuildRequires : pypi(lxml)
 BuildRequires : pypi(py)
+BuildRequires : pypi(setuptools)
+BuildRequires : pypi(setuptools_git_ls_files)
+BuildRequires : pypi(setuptools_scm)
+BuildRequires : pypi(wheel)
 BuildRequires : pypi-pluggy
 BuildRequires : pypi-pytest
 BuildRequires : pypi-tox
@@ -80,7 +84,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1683036118
+export SOURCE_DATE_EPOCH=1685561609
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
